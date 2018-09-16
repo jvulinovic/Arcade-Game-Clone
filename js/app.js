@@ -9,11 +9,17 @@ var Enemy = function() {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
+
 Enemy.prototype.update = function(dt) {
     this.x += this.speed * dt;
+    if (player.x < this.x + 60 &&
+     player.x + 60 > this.x &&
+     player.y < this.y + 60 &&
+     player.y + 60 > this.y) {player.x=200; player.y=405};
 };
 
 // Draw the enemy on the screen, required method for game
+
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     if (this.x > 500) {
@@ -22,11 +28,11 @@ Enemy.prototype.render = function() {
     }
 };
 
-
 // Set enemy starting positions
 
 //y co-ordinates of enemies
-enemyPosition = [63, 145, 227];
+
+var enemyPosition = [63, 145, 227];
 
 var allEnemies = [];
 
@@ -38,8 +44,47 @@ enemyPosition.forEach(function(position){
 // This class requires an update(), render() and
 // a handleInput() method.
 
+var Player = function() {
+    this.x = x;
+    this.y = y;
+    this.sprite = 'images/char-boy.png';
+};
+
+var player = new Player (x=200, y=405);
+
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Player.prototype.update = function() {
+    if(this.y===-10) {
+      console.log('WINNER')
+    };
+};
 
 
+Player.prototype.handleInput = function(key) {
+  if (key==='up') {
+    if (this.y >=73) {
+    this.y = this.y - 83;
+  };
+  }
+  if (key==='down') {
+    if (this.y <=404) {
+    this.y = this.y + 83;
+  };
+  }
+  if (key==='left') {
+    if (this.x >=100) {
+    this.x = this.x - 100;
+  };
+  }
+  if (key==='right') {
+    if (this.x <=300) {
+    this.x = this.x + 100;
+  };
+  }
+}
 
 
 // Now instantiate your objects.
@@ -57,6 +102,5 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
-    //player.handleInput(allowedKeys[e.keyCode]);
+    player.handleInput(allowedKeys[e.keyCode]);
 });
