@@ -9,16 +9,17 @@ var Enemy = function() {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
+// Collision detection and initiate collision function
 
 Enemy.prototype.update = function(dt) {
     this.x += this.speed * dt;
     if (player.x < this.x + 60 &&
      player.x + 60 > this.x &&
      player.y < this.y + 60 &&
-     player.y + 60 > this.y) {player.x=200; player.y=405};
+     player.y + 60 > this.y) {collision()};
 };
 
-// Draw the enemy on the screen, required method for game
+// Draw the enemy on the screen and set speed, required method for game
 
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -29,10 +30,11 @@ Enemy.prototype.render = function() {
 };
 
 // Set enemy starting positions
-
 //y co-ordinates of enemies
 
 var enemyPosition = [63, 145, 227];
+
+// Place all enemy objects in an array called allEnemies
 
 var allEnemies = [];
 
@@ -40,9 +42,8 @@ enemyPosition.forEach(function(position){
   allEnemies.push(new Enemy(x=0, y=position, this.speed = Math.floor(Math.random() * 400) + 100))
 });
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+
+// Place the player object in a variable called player
 
 var Player = function() {
     this.x = x;
@@ -52,16 +53,23 @@ var Player = function() {
 
 var player = new Player (x=200, y=405);
 
+// Now write your own player class
+// This class requires an update(), render() and
+// a handleInput() method.
+
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Check player has reached winning position
+
 Player.prototype.update = function() {
     if(this.y===-10) {
-      console.log('WINNER')
+      modalOperation();
     };
 };
 
+// Handle player movement, limit player movemment outside of canvas
 
 Player.prototype.handleInput = function(key) {
   if (key==='up') {
@@ -84,13 +92,7 @@ Player.prototype.handleInput = function(key) {
     this.x = this.x + 100;
   };
   }
-}
-
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
+};
 
 
 // This listens for key presses and sends the keys to your
@@ -104,3 +106,27 @@ document.addEventListener('keyup', function(e) {
     };
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+// Opens the congratulations pop-up when player reaches the water
+
+function modalOperation () {
+    var endGame = document.getElementById('Congratulations')
+    endGame.style.display='block';
+    var closeModal = document.getElementById('close');
+    closeModal.addEventListener("click", function(){
+    player.y=405;
+    player.x=200;
+    endGame.style.display='none';
+  })};
+
+// Reports collision and resets player position
+
+function collision () {
+      var collide = document.getElementById('Collision');
+      collide.style.display='block';
+      player.x=200;
+      player.y=405;
+      setTimeout(function(){
+        collide.style.display='none';
+      },1000);
+    };
