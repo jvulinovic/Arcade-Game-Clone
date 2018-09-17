@@ -1,15 +1,14 @@
-frontend-nanodegree-arcade-game
-===============================
-
-SUMMARY
+Summary
 ===============================
 
 The game is a variant of the classic Frogger aracde game.
 
-RUNNING THE GAME
+Running the game
 ===============================
 
 To run the game clone the repository - https://github.com/jvulinovic/Arcade-Game-Clone.git
+
+Or https://jvulinovic.github.io/Arcade-Game-Clone/ to the play the game.
 
 Playing the game
 ===============================
